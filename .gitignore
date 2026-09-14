@@ -1,0 +1,13 @@
+# Excel files
+*.xlsm
+*.xlsx
+
+# Excel temporary/lock files
+~$*
+
+# VS Code settings
+.vscode/
+
+# Python cache
+__pycache__/
+*.pyc
