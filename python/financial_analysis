@@ -1,160 +1,260 @@
-# Financial Transaction Analysis
-# Author: Royston-Calvin-Cornelio
-
 import pandas as pd
 
-# ---------------------------------------
-# 1. Load Data
-# ---------------------------------------
+# ============================================================
+# LOAD DATA
+# ============================================================
 
-file_path = "../data/financial_transactions.csv"
+file_path = "financial_transactions.csv"
 
 df = pd.read_csv(file_path)
 
-print("Dataset loaded successfully")
-print("Number of rows:", len(df))
-print("Number of columns:", len(df.columns))
+print("FINANCIAL DATA ANALYSIS")
+print("=" * 50)
+
+print("Total Records:", len(df))
+print("Total Columns:", len(df.columns))
+
+print("\nColumns:")
+print(df.columns.tolist())
 
 
-# ---------------------------------------
-# 2. Data Cleaning
-# ---------------------------------------
+# ============================================================
+# CONVERT COLUMNS
+# ============================================================
 
-# Remove duplicate records
-df = df.drop_duplicates()
-
-# Convert TransactionDate to date format
 df["TransactionDate"] = pd.to_datetime(
     df["TransactionDate"],
     errors="coerce"
 )
 
-# Convert TransactionAmount to numeric
 df["TransactionAmount"] = pd.to_numeric(
     df["TransactionAmount"],
     errors="coerce"
 )
 
-# Remove rows where important fields are missing
-df = df.dropna(
-    subset=["ContractID", "TransactionAmount"]
+
+# ============================================================
+# BUSINESS TYPE
+# ============================================================
+
+df["BusinessType"] = df["TransactionCode"].apply(
+    lambda x: "Group" if x == "Group Premium" else "Individual"
 )
 
-print("\nData cleaning completed")
-print("Rows after cleaning:", len(df))
+
+# ============================================================
+# DATA QUALITY
+# ============================================================
+
+print("\nDATA QUALITY")
+print("=" * 50)
+
+print("Duplicate Records:", df.duplicated().sum())
+
+print("\nMissing Values:")
+print(df.isnull().sum())
 
 
-# ---------------------------------------
-# 3. Basic Financial Analysis
-# ---------------------------------------
+# ============================================================
+# FINANCIAL SUMMARY
+# ============================================================
 
-total_transactions = len(df)
+print("\nFINANCIAL SUMMARY")
+print("=" * 50)
 
-total_amount = df["TransactionAmount"].sum()
-
-average_transaction = df["TransactionAmount"].mean()
-
-maximum_transaction = df["TransactionAmount"].max()
-
-minimum_transaction = df["TransactionAmount"].min()
-
-print("\nFinancial Summary")
-print("-------------------------")
-print("Total Transactions:", total_transactions)
-print("Total Transaction Amount:", total_amount)
-print("Average Transaction:", average_transaction)
-print("Maximum Transaction:", maximum_transaction)
-print("Minimum Transaction:", minimum_transaction)
-
-
-# ---------------------------------------
-# 4. Transaction Code Analysis
-# ---------------------------------------
-
-transaction_summary = (
-    df.groupby("TransactionCode")
-      .agg(
-          Transaction_Count=("TransactionAmount", "count"),
-          Total_Amount=("TransactionAmount", "sum"),
-          Average_Amount=("TransactionAmount", "mean")
-      )
-      .reset_index()
+print(
+    "Total Transaction Amount:",
+    df["TransactionAmount"].sum()
 )
 
-print("\nTransaction Code Summary")
-print(transaction_summary)
+print(
+    "Average Transaction Amount:",
+    df["TransactionAmount"].mean()
+)
+
+print(
+    "Maximum Transaction Amount:",
+    df["TransactionAmount"].max()
+)
+
+print(
+    "Minimum Transaction Amount:",
+    df["TransactionAmount"].min()
+)
 
 
-# ---------------------------------------
-# 5. Monthly Analysis
-# ---------------------------------------
+# ============================================================
+# TRANSACTION ANALYSIS
+# ============================================================
+
+print("\nTRANSACTION ANALYSIS")
+print("=" * 50)
+
+transaction_analysis = df.groupby("TransactionCode")[
+    "TransactionAmount"
+].agg(
+    Transaction_Count="count",
+    Total_Amount="sum",
+    Average_Amount="mean"
+)
+
+print(transaction_analysis)
+
+
+# ============================================================
+# BUSINESS TYPE ANALYSIS
+# ============================================================
+
+print("\nBUSINESS TYPE ANALYSIS")
+print("=" * 50)
+
+business_analysis = df.groupby("BusinessType")[
+    "TransactionAmount"
+].agg(
+    Transaction_Count="count",
+    Total_Amount="sum",
+    Average_Amount="mean"
+)
+
+print(business_analysis)
+
+
+# ============================================================
+# MONTHLY ANALYSIS
+# ============================================================
+
+print("\nMONTHLY ANALYSIS")
+print("=" * 50)
 
 df["Month"] = df["TransactionDate"].dt.to_period("M")
 
-monthly_summary = (
-    df.groupby("Month")
-      .agg(
-          Transaction_Count=("TransactionAmount", "count"),
-          Total_Amount=("TransactionAmount", "sum")
-      )
-      .reset_index()
+monthly_analysis = df.groupby("Month")[
+    "TransactionAmount"
+].agg(
+    Transaction_Count="count",
+    Total_Amount="sum"
 )
 
-print("\nMonthly Summary")
-print(monthly_summary)
+print(monthly_analysis)
 
 
-# ---------------------------------------
-# 6. Identify Large Transactions
-# ---------------------------------------
+# ============================================================
+# LARGE TRANSACTIONS
+# ============================================================
+
+print("\nLARGE TRANSACTIONS")
+print("=" * 50)
 
 large_transactions = df[
-    df["TransactionAmount"] > 100000
+    df["TransactionAmount"] > 400000
 ]
 
-print("\nLarge Transactions")
-print(large_transactions)
-
-
-# ---------------------------------------
-# 7. Contract-Level Analysis
-# ---------------------------------------
-
-contract_summary = (
-    df.groupby("ContractID")
-      .agg(
-          Transaction_Count=("TransactionAmount", "count"),
-          Total_Amount=("TransactionAmount", "sum")
-      )
-      .reset_index()
-      .sort_values(
-          "Total_Amount",
-          ascending=False
-      )
+print(
+    "Transactions above 400,000:",
+    len(large_transactions)
 )
 
-print("\nTop Contracts by Transaction Amount")
-print(contract_summary.head(10))
+
+# ============================================================
+# GROUP PREMIUM LIFE INDICATOR
+# ============================================================
+
+print("\nGROUP PREMIUM LIFE INDICATOR")
+print("=" * 50)
 
 
-# ---------------------------------------
-# 8. Export Results
-# ---------------------------------------
+# Only Group Premium transactions
+group_df = df[
+    df["TransactionCode"] == "Group Premium"
+].copy()
 
-contract_summary.to_csv(
-    "../output/contract_summary.csv",
-    index=False
+
+# Extract LifeIndicator from ContractID
+def get_life_indicator(contract_id):
+
+    contract_id = str(contract_id).strip()
+
+    if contract_id.endswith("S1"):
+        return "S1"
+
+    elif contract_id.endswith("S"):
+        return "S"
+
+    elif contract_id.endswith("P"):
+        return "P"
+
+    else:
+        return "Unknown"
+
+
+group_df["LifeIndicator"] = group_df[
+    "ContractID"
+].apply(get_life_indicator)
+
+
+print(
+    group_df["LifeIndicator"].value_counts()
 )
 
-transaction_summary.to_csv(
-    "../output/transaction_summary.csv",
-    index=False
+
+# ============================================================
+# GROUP PREMIUM LIFE INDICATOR + AMOUNT
+# ============================================================
+
+print("\nGROUP PREMIUM ANALYSIS BY LIFE INDICATOR")
+print("=" * 50)
+
+life_analysis = group_df.groupby("LifeIndicator")[
+    "TransactionAmount"
+].agg(
+    Transaction_Count="count",
+    Total_Amount="sum",
+    Average_Amount="mean"
 )
 
-monthly_summary.to_csv(
-    "../output/monthly_summary.csv",
-    index=False
+print(life_analysis)
+
+
+# ============================================================
+# CHECK CONTRACT ID FORMAT
+# ============================================================
+
+print("\nGROUP PREMIUM CONTRACT ID FORMAT CHECK")
+print("=" * 50)
+
+
+def check_group_contract_id(contract_id):
+
+    contract_id = str(contract_id).strip()
+
+    # P = 11 characters
+    # S = 11 characters
+    # S1 = 12 characters
+
+    if len(contract_id) in [11, 12]:
+        return True
+
+    return False
+
+
+group_df["ValidContractID"] = group_df[
+    "ContractID"
+].apply(check_group_contract_id)
+
+
+print(
+    "Valid Contract IDs:",
+    group_df["ValidContractID"].sum()
 )
+
+print(
+    "Invalid Contract IDs:",
+    (~group_df["ValidContractID"]).sum()
+)
+
+
+# ============================================================
+# FINAL
+# ============================================================
 
 print("\nAnalysis completed successfully.")
-print("Results exported to output folder.")
