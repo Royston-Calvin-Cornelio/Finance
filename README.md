@@ -1,385 +1,284 @@
 # Financial Transaction Analysis & Automated Reconciliation
 
+### Python | SQL | Excel | VBA | Pandas | MySQL
+
+An end-to-end financial data analysis and reconciliation project designed to simulate real-world finance operations involving transaction analysis, data-quality validation, financial reconciliation, exception identification, and automated reporting.
+
+---
+
 ## 📌 Project Overview
 
-An end-to-end finance analytics and reconciliation project designed to simulate a real-world financial operations environment.
+Financial organizations process large volumes of transactions that need to be validated and reconciled against reference data.
 
-The project analyzes **1 million financial transactions**, performs data-quality validation, reconciles transactions against reference data, identifies exceptions, and automates reconciliation reporting using **Python, SQL, Excel and VBA**.
+This project demonstrates how a finance professional can combine **financial knowledge with technical skills** to analyze transaction data, identify discrepancies, perform data-quality checks, and automate reconciliation reporting.
+
+The project processes **1 million financial transactions** and uses multiple technologies across the workflow:
+
+- Python & Pandas for data analysis
+- MySQL for financial analysis and reconciliation queries
+- Excel for reconciliation and reporting
+- VBA for automation
+- GitHub for version control and project documentation
 
 ---
 
 ## 🎯 Business Objective
 
-The objective of this project is to demonstrate how finance and accounting knowledge can be combined with data analytics and automation to solve practical business problems.
+The main objective is to build a practical financial reconciliation workflow that can:
 
-The project focuses on:
+1. Analyze large transaction datasets
+2. Identify transaction patterns
+3. Detect data-quality issues
+4. Compare actual transactions against reference data
+5. Identify financial discrepancies
+6. Classify reconciliation exceptions
+7. Calculate reconciliation KPIs
+8. Automate exception reporting using VBA
 
-- Financial transaction analysis
-- Data reconciliation
-- Data-quality validation
-- Exception identification
-- Financial reporting
-- Process automation
-- Management reporting
+This simulates activities commonly performed in **financial reporting, accounting operations, insurance finance, reconciliation, and data-analysis functions**.
 
 ---
 
-## 🛠️ Tools & Technologies
+# 📊 Dataset
 
-| Technology | Purpose |
+The primary dataset contains **1,000,000 financial transaction records**.
+
+### Main fields
+
+| Column | Description |
 |---|---|
-| Python | Large-scale transaction analysis |
-| Pandas | Data manipulation and analysis |
-| MySQL | SQL-based financial analysis and reconciliation |
-| Microsoft Excel | Reconciliation and reporting |
-| VBA | Reconciliation automation |
-| Power BI | Dashboarding and visualization |
+| TransactionDate | Date of the transaction |
+| TransactionCode | Type of financial transaction |
+| TransactionAmount | Monetary value of the transaction |
+| ContractID | Unique/reference contract identifier |
+| BusinessType | Group or Individual business |
 
----
+### Transaction Types
 
-# 📂 Project Structure
+- Group Premium
+- Individual Premium
+- Commission
 
-```text
-Finance
-│
-├── python
-│   ├── financial_analysis
-│   └── financial_transactions.csv
-│
-├── sql
-│   └── financial_analysis.sql
-│
-├── Excel
-│   ├── Financial_Reconciliation_Automation.bas
-│   └── Reconciliation_Examples.csv
-│
-├── screenshots
-│   ├── reconciliation_summary.png
-│   └── reconciliation_exceptions.png
-│
-├── README.md
-└── .gitignore
-```
+### Business Types
 
-> The original Excel `.xlsm` workbook is maintained locally because of GitHub file-size limitations. The VBA source code and reconciliation examples are included in the repository.
+- Group
+- Individual
 
 ---
 
 # 🐍 Python Analysis
 
-Python and Pandas were used to analyze **1,000,000 financial transactions**.
+Python and Pandas were used to perform exploratory financial analysis and data-quality checks on the 1 million transaction dataset.
 
-### Analysis Performed
+### Analysis performed
 
-- Transaction volume analysis
+- Total transaction count
 - Total transaction amount
 - Average transaction amount
 - Minimum and maximum transaction values
-- Transaction analysis by transaction code
+- Transaction analysis by transaction type
 - Business-type analysis
-- Monthly transaction trends
+- Monthly transaction analysis
 - High-value transaction identification
 - Duplicate detection
 - Missing-value analysis
-- Life-indicator analysis
+- Life Indicator analysis
 - Contract ID format validation
 
-### Python Results
+### Key Python Results
 
 | Metric | Result |
 |---|---:|
 | Total Records | 1,000,000 |
 | Total Transaction Amount | 252,514,880,709 |
 | Average Transaction Amount | 252,514.88 |
-| Maximum Transaction Amount | 500,000 |
 | Minimum Transaction Amount | 5,000 |
+| Maximum Transaction Amount | 500,000 |
 | Duplicate Records | 0 |
 | Missing Values | 0 |
+| Transactions > 400,000 | 202,533 |
 
 ### Transaction Analysis
 
-The dataset contains three major transaction categories:
-
-- Group Premium
-- Individual Premium
-- Commission
-
-The analysis calculates transaction count, total transaction amount and average transaction amount for each category.
-
-### Monthly Analysis
-
-Python was also used to analyze transaction volumes and transaction amounts by month, helping identify trends across the financial year.
+| Transaction Type | Records | Total Amount |
+|---|---:|---:|
+| Group Premium | 449,489 | 113,549,309,361 |
+| Individual Premium | 400,399 | 101,127,936,162 |
+| Commission | 150,112 | 37,837,635,186 |
 
 ---
 
 # 🗄️ SQL Analysis
 
-MySQL was used to perform financial analysis, data-quality checks and reconciliation analysis.
+MySQL was used to perform financial analysis, data-quality validation, duplicate detection, and reconciliation analysis.
 
-### SQL Analysis Includes
+### SQL analysis includes
 
-- Financial summary
-- Transaction analysis by transaction code
-- Business-type analysis
-- Monthly transaction analysis
-- High-value transaction analysis
-- Top transaction analysis
-- Duplicate Contract ID detection
-- NULL-value checks
-- Negative transaction detection
-- Contract ID format validation
-- Reconciliation status classification
-- Exception reporting
-- Reconciliation KPI calculation
-
-The complete SQL analysis is available in:
-
-```text
-sql/financial_analysis.sql
-```
+1. Total transaction analysis
+2. Transaction-type analysis
+3. Business-type analysis
+4. Monthly transaction analysis
+5. High-value transaction analysis
+6. Duplicate Contract ID detection
+7. Missing-value checks
+8. Negative transaction detection
+9. Invalid Contract ID detection
+10. Contract ID format validation
+11. Reference-data reconciliation
+12. Exception classification
+13. Amount difference calculation
+14. Reconciliation KPI calculation
 
 ---
 
 # 🔄 Financial Reconciliation
 
-The reconciliation process compares actual financial transaction data against reference data.
+A separate reference dataset was created to simulate expected financial transaction information.
 
-### Reconciliation Process
+The actual transaction data was compared against the reference data using:
 
-```text
-Transaction Data
-       ↓
-Reference Data
-       ↓
-Contract ID Matching
-       ↓
-Amount Comparison
-       ↓
-Business Type Comparison
-       ↓
-Reconciliation Status
-       ↓
-Exception Report
-```
+**ContractID**
 
-### Reconciliation Logic
+The reconciliation checks:
 
-Each transaction is compared with the corresponding reference record using **Contract ID**.
-
-The process validates:
-
-1. Contract ID availability
-2. Contract ID existence in reference data
-3. Transaction amount
-4. Business type
-5. Overall reconciliation status
+- Transaction amount
+- Business type
+- Contract existence
 
 ---
 
-# ⚠️ Reconciliation Categories
+## Reconciliation Logic
 
-The reconciliation process classifies transactions into the following categories:
+Each transaction is classified into one of the following categories:
 
 ### ✅ Matched
 
-Actual transaction data agrees with the reference data.
+Actual amount and business type match the reference data.
 
 ### ⚠️ Amount Mismatch
 
-The transaction amount differs from the expected reference amount.
+Actual transaction amount differs from the expected amount.
 
 ### ⚠️ Business Type Mismatch
 
-The business type differs from the expected reference value.
+Actual business type differs from the expected business type.
 
-### ⚠️ Amount & Business Type Mismatch
+### 🔴 Amount & Business Type Mismatch
 
-Both the transaction amount and business type differ from the reference data.
+Both the transaction amount and business type differ.
 
 ### ❌ Contract Not Found
 
-The transaction Contract ID does not exist in the reference data.
+The Contract ID does not exist in the reference dataset.
 
 ---
 
-# 📊 Reconciliation Results
+# 📈 Reconciliation Results
 
-The Excel reconciliation tool processed **1,000,000 transactions**.
+The Excel reconciliation tool produced the following results:
 
-| Metric | Result |
+| Reconciliation Status | Records |
 |---|---:|
-| Total Transactions | 1,000,000 |
-| Matched Transactions | 727,850 |
-| Exception Transactions | 272,150 |
-| Match Rate | 73% |
-| Exception Rate | 27% |
-| Duplicate Contract IDs | 162,741 |
-
-### Exception Breakdown
-
-| Exception Type | Records |
-|---|---:|
+| Matched | 727,850 |
 | Amount Mismatch | 267,483 |
 | Business Type Mismatch | 1,000 |
 | Amount & Business Type Mismatch | 1,737 |
 | Contract Not Found | 1,930 |
+| **Total Transactions** | **1,000,000** |
+
+### Key KPIs
+
+**Match Rate:** 73%
+
+**Exception Rate:** 27%
+
+**Total Exceptions:** 272,150
+
+**Total Amount Difference:** -70,231,929
 
 ---
 
-# 📗 Excel & VBA Automation
+# 📊 Excel Reconciliation Tool
 
-An Excel-based reconciliation tool was developed using VBA to automate repetitive reconciliation activities.
+Excel was used to create a reconciliation workbook containing:
 
-### VBA Automation Performs
+### Transaction_Data
 
-- Reconciliation calculation
-- Data-quality checks
-- Exception identification
-- Reconciliation status classification
-- Amount difference calculation
-- Exception-rate calculation
-- Automated exception report generation
+Contains the transaction dataset.
 
-The VBA source code is available here:
+### Reference_Data
 
-```text
-Excel/Financial_Reconciliation_Automation.bas
-```
+Contains expected transaction information.
 
-The automation transforms a manual reconciliation process into a repeatable workflow.
+### Reconciliation
+
+Performs record-level comparison between actual and expected data.
+
+### Summary
+
+Provides reconciliation KPIs and data-quality indicators.
 
 ---
 
-# 📸 Reconciliation Screenshots
+# ⚙️ VBA Automation
 
-## Reconciliation Summary
+VBA was used to automate the reconciliation workflow.
 
-![Reconciliation Summary](screenshots/reconciliation_summary.png)
+The automation performs the following steps:
 
-## Reconciliation Exceptions
+1. Recalculates reconciliation formulas
+2. Updates summary metrics
+3. Performs data-quality checks
+4. Calculates exception rate
+5. Records the last reconciliation run
+6. Exports reconciliation exceptions
+7. Generates a timestamped exception report
 
-![Reconciliation Exceptions](screenshots/reconciliation_exceptions.png)
+This reduces manual reconciliation work and creates a repeatable reporting process.
 
 ---
 
 # 🔍 Data Quality Controls
 
-The project includes multiple data-quality controls designed to identify common financial-data issues.
+The project includes multiple financial data-quality controls.
 
-### Controls Include
+### Controls implemented
 
-- Duplicate transaction detection
+- Duplicate record detection
 - Duplicate Contract ID detection
-- Missing Contract ID detection
-- Missing transaction amount detection
+- Blank Contract ID detection
+- Blank transaction amount detection
 - Negative transaction detection
 - Invalid Contract ID detection
 - Contract ID format validation
-- Reference-data validation
-- Amount mismatch detection
+- Missing reference records
+- Transaction amount mismatch detection
 - Business type mismatch detection
 
-These controls help identify potential issues before financial reporting or downstream processing.
+These controls demonstrate how automated validation can be incorporated into financial data workflows.
 
 ---
 
-# 💼 Finance Skills Demonstrated
-
-This project demonstrates practical knowledge of:
-
-- Financial reconciliation
-- Financial transaction analysis
-- Financial reporting
-- Data-quality controls
-- Exception management
-- Reference-data validation
-- Transaction-level investigation
-- Financial data analysis
-- Automated reporting
-
----
-
-# 💻 Technical Skills Demonstrated
-
-### Programming & Data
-
-- Python
-- Pandas
-- SQL
-- MySQL
-
-### Excel & Automation
-
-- Microsoft Excel
-- Advanced Excel formulas
-- XLOOKUP
-- VBA
-- Process automation
-- Exception reporting
-
-### Business Intelligence
-
-- Power BI
-
----
-
-# 🚀 Business Value
-
-This project demonstrates the ability to combine **finance/accounting knowledge with technical and analytical skills** to automate repetitive processes and improve financial data analysis.
-
-The project is particularly relevant to roles involving:
-
-- Financial Data Analyst
-- Finance Analyst
-- Reconciliation Analyst
-- MIS Analyst
-- Reporting Analyst
-- Business Analyst
-- Data Analyst
-- Finance Operations Analyst
-
----
-
-# 📈 Key Project Highlights
-
-- Analyzed **1 million financial transactions**
-- Built financial analysis using **Python and Pandas**
-- Developed multiple **MySQL financial analysis queries**
-- Designed a transaction reconciliation process
-- Automated reconciliation using **Excel VBA**
-- Created automated exception reporting
-- Implemented data-quality validation controls
-- Identified and categorized reconciliation exceptions
-- Combined finance knowledge with data analytics and automation
-
----
-
-# 👨‍💼 About
-
-M.Com graduate with finance and financial reporting experience, combining accounting knowledge with technical skills in:
-
-**Python | SQL | Excel | VBA | Power BI | Data Analysis**
-
-This project demonstrates the practical application of these skills in a financial-data and reconciliation environment.
-
----
-
-## ⭐ Project Objective
-
-The overall objective of this project is to demonstrate the ability to take a large financial dataset, analyze it, validate its quality, reconcile it against reference information, identify exceptions and automate the reporting process.
+# 📁 Project Structure
 
 ```text
-Large Financial Dataset
-        ↓
-Python Analysis
-        ↓
-SQL Analysis
-        ↓
-Data Quality Checks
-        ↓
-Financial Reconciliation
-        ↓
-VBA Automation
-        ↓
-Exception Reporting
-```
+Finance/
+│
+├── python/
+│   ├── financial_analysis
+│   └── financial_transactions.csv
+│
+├── sql/
+│   └── financial_analysis.sql
+│
+├── Excel/
+│   ├── Financial_Reconciliation_Automation.bas
+│   └── Reconciliation_Examples.csv
+│
+├── screenshots/
+│   ├── reconciliation_summary.png
+│   └── reconciliation_exceptions.png
+│
+├── README.md
+├── requirements.txt
+└── .gitignore
